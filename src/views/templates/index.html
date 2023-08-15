@@ -19,7 +19,9 @@
   <li class="row from">
       <select name="translate-from">
           {% for lang in languages %}
-              <option>{{ lang.name.upper() }}</option>
+              <option value="{{ lang.acronym }}" {% if lang.acronym == translate_from %}selected{% endif %}>
+                {{ lang.name.upper() }}
+              </option>
           {% endfor %}
       </select>
   </li>
@@ -29,7 +31,7 @@
   <li class="row to">
       <select name="translate-to">
           {% for lang in languages %}
-              <option value="{{ lang.acronym }}" {% if lang.code == selected_language_acronym %}selected{% endif %}>
+              <option value="{{ lang.acronym }}" {% if lang.acronym == translate_to %}selected{% endif %}>
                   {{ lang.name.upper() }}
               </option>
           {% endfor %}

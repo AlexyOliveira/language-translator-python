@@ -21,7 +21,7 @@ def index():
             translated=exemple_translated,
         )
     if request.method == "POST":
-        # translate_from = request.form.get("translate-from")
+        translate_from = request.form.get("translate-from")
         translate_to = request.form.get("translate-to")
 
         text = request.form.get("text-to-translate")
@@ -34,10 +34,27 @@ def index():
             languages=LanguageModel.list_dicts(),
             text_to_translate=text,
             translated=translated_text,
+            translate_from=translate_from,
+            translate_to=translate_to,
         )
 
 
 # Req. 6
 @translate_controller.route("/reverse", methods=["POST"])
 def reverse():
-    raise NotImplementedError
+    translate_from = request.form.get("translate-from")
+    translate_to = request.form.get("translate-to")
+
+    text = request.form.get("text-to-translate")
+    translated_text = GoogleTranslator(
+        source="auto", target=translate_to or "en"
+    ).translate(text)
+
+    return render_template(
+        "index.html",
+        languages=LanguageModel.list_dicts(),
+        text_to_translate=translated_text,
+        translated=text,
+        translate_from=translate_to or "en",
+        translate_to=translate_from or "pt",
+    )
