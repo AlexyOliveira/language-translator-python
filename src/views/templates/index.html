@@ -11,22 +11,32 @@
     <div class="wrapper">
       <form method="post">
         <div class="text-input">
-          <textarea name="text-to-translate" spellcheck="false" class="from-text" placeholder="O que deseja traduzir"></textarea>
-          <textarea spellcheck="false" readonly disabled class="to-text">Requisito ainda não desenvolvido</textarea>
+          <textarea name="text-to-translate" spellcheck="false" class="from-text" placeholder="O que deseja traduzir">{{ text_to_translate }}</textarea>
+          <textarea spellcheck="false" readonly disabled class="to-text">{{ translated }}</textarea>
         </div>
-        <ul class="controls">
-          <li class="row from">
-            <select name="translate-from">
-            </select>
-          </li>
-          <div>
-            <button class="tool" type="submit" formaction="/reverse">🔁</button>
-          </div>
-          <li class="row to">
-            <select name="translate-to">
-            </select>
-          </li>
-        </ul>
+        
+<ul class="controls">
+  <li class="row from">
+      <select name="translate-from">
+          {% for lang in languages %}
+              <option>{{ lang.name.upper() }}</option>
+          {% endfor %}
+      </select>
+  </li>
+  <div>
+      <button class="tool" type="submit" formaction="/reverse">🔁</button>
+  </div>
+  <li class="row to">
+      <select name="translate-to">
+          {% for lang in languages %}
+              <option value="{{ lang.acronym }}" {% if lang.code == selected_language_acronym %}selected{% endif %}>
+                  {{ lang.name.upper() }}
+              </option>
+          {% endfor %}
+      </select>
+  </li>
+</ul>
+
       </div>
       <button class="main-button" type="submit" formaction="/">Traduzir</button>
     </form>
