@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from deep_translator import GoogleTranslator
 from models.language_model import LanguageModel
 
@@ -11,13 +11,30 @@ translate_controller = Blueprint("translate_controller", __name__)
 # Reqs. 4 e 5
 @translate_controller.route("/", methods=["GET", "POST"])
 def index():
-    user_text = "O que deseja traduzir"
-    return render_template(
-        "index.html",
-        languages=LanguageModel.list_dicts(),
-        text_to_translate=user_text,
-        translated="Tradução",
-    )
+    if request.method == "GET":
+        exemple_text = "O que deseja traduzir"
+        exemple_translated = "Tradução"
+        return render_template(
+            "index.html",
+            languages=LanguageModel.list_dicts(),
+            text_to_translate=exemple_text,
+            translated=exemple_translated,
+        )
+    if request.method == "POST":
+        translate_from = request.form.get("translate-from")
+        translate_to = request.form.get("translate-to")
+
+        text = request.form.get("text-to-translate")
+        translated_text = GoogleTranslator(
+            source="auto", target=translate_to
+        ).translate(text)
+
+        return render_template(
+            "index.html",
+            languages=LanguageModel.list_dicts(),
+            text_to_translate=text,
+            translated=translated_text,
+        )
 
 
 # Req. 6
