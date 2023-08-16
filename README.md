@@ -18,8 +18,6 @@
 
 </details>
 
-## Preparando Ambiente
-
 <details>
 
 <summary>🐳 Subindo a aplicação</summary>
